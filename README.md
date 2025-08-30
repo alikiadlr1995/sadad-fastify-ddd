@@ -1,72 +1,71 @@
-# Fastify + Mongo + DDD (احراز هویت)
+# Fastify + Mongo + DDD (Authentication)
 
-این پروژه یک اسکلت مینیمال بک‌اند با **Fastify**، **MongoDB** و معماری **DDD** است که
-اندپوینت‌های پایه احراز هویت را فراهم می‌کند:
+This project is a **minimal backend skeleton** built with **Fastify**, **MongoDB**, and a **DDD** architecture that provides basic authentication endpoints:
 
-- `POST /auth/register` ثبت‌نام
-- `POST /auth/login` ورود
-- `POST /auth/logout` خروج (ابطال رفرش‌توکن)
-- `POST /auth/refresh` صدور توکن دسترسی جدید
-- `GET /auth/me` دریافت پروفایل (نیاز به Access Token)
+- `POST /auth/register` Sign up
+- `POST /auth/login` Sign in
+- `POST /auth/logout` Logout (refresh-token revocation)
+- `POST /auth/refresh` Issue a new access token
+- `GET /auth/me` Get profile (requires Access Token)
 
-## راه‌اندازی سریع
+## Quick Start
 
-1) پیش‌نیازها: Node.js 18+ و MongoDB در حال اجرا
-2) نصب پکیج‌ها:
-```bash
-npm install
-```
-3) ساخت فایل `.env` بر اساس `.env.example`:
+1) Prerequisites: Node.js 18+ and a running MongoDB
+2) Install packages:
 ```bash
 cp .env.example .env
-# سپس مقادیر را اصلاح کنید
 ```
-4) اجرا:
+3) Create .env from .env.example:
+```bash
+cp .env.example .env
+```
+4) Run:
 ```bash
 npm run dev
-# یا
+# or
 npm start
 ```
 
-## تست سریع با curl
+## Quick cURL Tests
 
-ثبت‌نام:
+Register:
 ```bash
 curl -X POST http://localhost:3000/auth/register   -H "Content-Type: application/json"   -d '{"email":"user@test.com","password":"P@ssw0rd!"}'
+
 ```
 
-ورود:
+Login:
 ```bash
 curl -X POST http://localhost:3000/auth/login   -H "Content-Type: application/json"   -d '{"email":"user@test.com","password":"P@ssw0rd!"}'
 ```
 
-دریافت پروفایل:
+Get profile:
 ```bash
-ACCESS=توکن_دریافتی_از_login_یا_refresh
+ACCESS=token_received_from_login_or_refresh
 curl http://localhost:3000/auth/me -H "Authorization: Bearer $ACCESS"
 ```
 
-خروج (لاگ‌اوت):
+Logout:
 ```bash
-curl -X POST http://localhost:3000/auth/logout   -H "Content-Type: application/json"   -d '{"refreshToken":"REFRESH_TOKEN_از_login_یا_refresh"}'
+curl -X POST http://localhost:3000/auth/logout   -H "Content-Type: application/json"   -d '{"refreshToken":"REFRESH_TOKEN_from_login_or_refresh"}'
 ```
 
-نوسازی توکن دسترسی:
+Refresh access token:
 ```bash
 curl -X POST http://localhost:3000/auth/refresh   -H "Content-Type: application/json"   -d '{"refreshToken":"REFRESH_TOKEN"}'
 ```
 
-## ساختار پوشه‌ها (DDD سبک)
+## Folder Structure (DDD-Style)
 
 ```
 src/
-  app.js                 # بوت‌استرپ Fastify
-  server.js              # نقطه شروع
+  app.js                 # Fastify bootstrap
+  server.js              # Entry point
   config/
-    env.js               # بارگذاری تنظیمات
+    env.js               # Environment loading
   infrastructure/
-    db/mongo.js          # اتصال مانگوس
-    models/userModel.js  # مدل مانگوس
+    db/mongo.js          # Mongoose connection
+    models/userModel.js  # Mongoose model
     repositories/MongoUserRepository.js
     security/jwt.js
     security/password.js
@@ -82,7 +81,8 @@ src/
     routes/authRoutes.js
     controllers/authController.js
     schemas/authSchemas.js
+
 ```
 
-> نکته: برای سادگی، رفرش‌توکن در پایگاه‌داده به صورت **هش** ذخیره می‌شود و
-> هنگام لاگ‌اوت حذف می‌گردد. توکن دسترسی عمر کوتاه دارد (پیش‌فرض 15 دقیقه).
+Note: For simplicity, the refresh token is stored hashed in the database and removed on logout.
+The access token has a short lifetime (default 15 minutes).
