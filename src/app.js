@@ -1,16 +1,18 @@
-const fastify = require('fastify')
-const sensible = require('@fastify/sensible')
-const jwt = require('@fastify/jwt')
-const { JWT_SECRET, JWT_AUDIENCE, JWT_ISSUER } = require('./config/env')
-const { connectMongo } = require('./infrastructure/db/mongo')
-const authRoutes = require('./interfaces/http/routes/authRoutes')
+import fastify from 'fastify'
+import sensible from '@fastify/sensible'
+import fastifyJwt from '@fastify/jwt'
+import { JWT_SECRET, JWT_AUDIENCE, JWT_ISSUER } from './config/env.js'
+import  connectMongo  from './infrastructure/db/mongo.js'
+import authRoutes from './interfaces/http/routes/authRoutes.js'
+import charityRoutes from './interfaces/http/routes/charityRoutes.js';
 
-function buildApp () {
+
+export function buildApp() {
   const app = fastify({ logger: true })
 
   // Plugins
   app.register(sensible)
-  app.register(jwt, {
+  app.register(fastifyJwt, {
     secret: JWT_SECRET,
     sign: { issuer: JWT_ISSUER, audience: JWT_AUDIENCE },
     verify: { issuer: JWT_ISSUER, audience: JWT_AUDIENCE }
@@ -32,6 +34,7 @@ function buildApp () {
 
   // Routes
   app.register(authRoutes)
+  app.register(charityRoutes)
 
   // Health check
   app.get('/health', async () => ({ ok: true }))
@@ -39,4 +42,4 @@ function buildApp () {
   return app
 }
 
-module.exports = { buildApp }
+export default buildApp

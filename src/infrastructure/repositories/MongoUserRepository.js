@@ -1,5 +1,5 @@
-const { UserModel } = require('../models/userModel')
-const { User } = require('../../domain/user/User')
+import  UserModel  from '../models/userModel.js'
+import  User  from '../../domain/user/User.js'
 
 function toEntity(doc) {
   if (!doc) return null
@@ -54,4 +54,4 @@ class MongoUserRepository {
   }
 }
 
-module.exports = { MongoUserRepository }
+export default class { MongoUserRepository }

@@ -1,10 +1,8 @@
-const mongoose = require('mongoose')
-const { MONGO_URI } = require('../../config/env')
+import { set, connect } from 'mongoose'
+import { MONGO_URI } from '../../config/env.js'
 
-async function connectMongo (fastify) {
-  mongoose.set('strictQuery', true)
-  await mongoose.connect(MONGO_URI)
+export default async function connectMongo (fastify) {
+  set('strictQuery', true)
+  await connect(MONGO_URI)
   fastify.log.info('MongoDB connected')
 }
-
-module.exports = { connectMongo }

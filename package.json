@@ -2,7 +2,7 @@
   "name": "fastify-ddd-auth-starter",
   "version": "1.0.0",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon -r dotenv/config src/server.js",

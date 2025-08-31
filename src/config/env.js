@@ -1,5 +1,4 @@
-const dotenv = require('dotenv')
-dotenv.config()
+import 'dotenv/config'
 
 function required(name) {
   const v = process.env[name]
@@ -7,12 +6,11 @@ function required(name) {
   return v
 }
 
-module.exports = {
-  PORT: parseInt(process.env.PORT || '3000', 10),
-  MONGO_URI: required('MONGO_URI'),
-  JWT_SECRET: required('JWT_SECRET'),
-  ACCESS_TOKEN_EXPIRES: process.env.ACCESS_TOKEN_EXPIRES || '15m',
-  REFRESH_TOKEN_EXPIRES: process.env.REFRESH_TOKEN_EXPIRES || '7d',
-  JWT_ISSUER: process.env.JWT_ISSUER || 'example.auth',
-  JWT_AUDIENCE: process.env.JWT_AUDIENCE || 'example.clients'
-}
+export const PORT = Number.parseInt(process.env.PORT ?? '3000', 10)
+export const MONGO_URI = required('MONGO_URI')
+export const JWT_SECRET = required('JWT_SECRET')
+export const ACCESS_TOKEN_EXPIRES = process.env.ACCESS_TOKEN_EXPIRES ?? '15m'
+export const REFRESH_TOKEN_EXPIRES = process.env.REFRESH_TOKEN_EXPIRES ?? '7d'
+export const JWT_ISSUER = process.env.JWT_ISSUER ?? 'example.auth'
+export const JWT_AUDIENCE = process.env.JWT_AUDIENCE ?? 'example.clients'
+

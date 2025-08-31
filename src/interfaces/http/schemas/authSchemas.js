@@ -1,18 +1,18 @@
 const email = { type: 'string', format: 'email' }
 const password = { type: 'string', minLength: 6, maxLength: 100 }
 
-const registerBody = {
+export const registerBody = {
   type: 'object',
   required: ['email', 'password'],
-  properties: { email, password }
+  properties: { email, password },
 }
 
-const loginBody = registerBody
+export const loginBody = registerBody
 
-const tokenBody = {
+export const tokenBody = {
   type: 'object',
   required: ['refreshToken'],
-  properties: { refreshToken: { type: 'string', minLength: 20 } }
+  properties: { refreshToken: { type: 'string', minLength: 20 } },
 }
 
-module.exports = { registerBody, loginBody, tokenBody }
+export default { registerBody, loginBody, tokenBody }

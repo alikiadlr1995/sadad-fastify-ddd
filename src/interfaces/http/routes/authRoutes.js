@@ -1,9 +1,9 @@
-const fp = require('fastify-plugin')
-const { MongoUserRepository } = require('../../../infrastructure/repositories/MongoUserRepository')
-const { authController } = require('../controllers/authController')
-const { registerBody, loginBody, tokenBody } = require('../schemas/authSchemas')
+import fp from 'fastify-plugin'
+import  MongoUserRepository  from '../../../infrastructure/repositories/MongoUserRepository.js'
+import { authController } from '../controllers/authController.js'
+import { registerBody, loginBody, tokenBody } from '../schemas/authSchemas.js'
 
-async function routes (fastify) {
+async function routes(fastify) {
   const userRepo = new MongoUserRepository()
   const controller = authController({ userRepo })
 
@@ -14,4 +14,5 @@ async function routes (fastify) {
   fastify.post('/auth/refresh', { schema: { body: tokenBody } }, controller.refresh)
 }
 
-module.exports = fp(routes)
+export default fp(routes)
+export { routes }

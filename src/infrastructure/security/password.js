@@ -1,12 +1,12 @@
-const bcrypt = require('bcryptjs')
+import bcrypt from 'bcryptjs'
 
-async function hashPassword (plain) {
+export async function hashPassword(plain) {
   const salt = await bcrypt.genSalt(12)
   return bcrypt.hash(plain, salt)
 }
 
-async function verifyPassword (plain, hash) {
+export async function verifyPassword(plain, hash) {
   return bcrypt.compare(plain, hash)
 }
 
-module.exports = { hashPassword, verifyPassword }
+export default { hashPassword, verifyPassword }
