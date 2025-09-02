@@ -5,6 +5,7 @@ import { JWT_SECRET, JWT_AUDIENCE, JWT_ISSUER } from './config/env.js'
 import  connectMongo  from './infrastructure/db/mongo.js'
 import authRoutes from './interfaces/http/routes/authRoutes.js'
 import charityRoutes from './interfaces/http/routes/charityRoutes.js';
+import devBulkRoutes from './dev/dev-bulk-routes.js';
 
 
 export function buildApp() {
@@ -38,6 +39,11 @@ export function buildApp() {
 
   // Health check
   app.get('/health', async () => ({ ok: true }))
+
+  if (process.env.NODE_ENV !== 'production') {
+  app.log.info('Dev bulk routes enabled');
+  app.register(devBulkRoutes);
+  }
 
   return app
 }
